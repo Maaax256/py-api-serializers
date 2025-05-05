@@ -26,10 +26,11 @@ class Genre(models.Model):
 class Actor(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
+    full_name = models.CharField(max_length=255, editable=False, null=True)
 
-    @property
-    def full_name(self) -> str:
-        return f"{self.first_name} {self.last_name}"
+    def save(self, *args, **kwargs):
+        self.full_name = f"{self.first_name} {self.last_name}"
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
